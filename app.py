@@ -20,30 +20,10 @@ except Exception as e:
     r'PWD=123456;'
 )
 
-'''
-# Estabeleça a conexão
-conn = pyodbc.connect(conn_str)
-
-# Crie um cursor para executar consultas SQL
-cursor = conn.cursor()
-
-# Exemplo de consulta
-cursor.execute("SELECT idPieza, pPoppetpos, ts FROM poppet")
-rows = cursor.fetchall()
-
-# Iterar sobre os resultados
-for row in rows:
-    print(row.idPieza, row.pPoppetpos, row.ts)
-
-# Feche a conexão e o cursor quando terminar
-cursor.close()
-conn.close()
-'''
-
 
 # Estabeleça a conexão
 # Função para gerar o gráfico
-def generate_plot():
+def generate_plot(year):
     # Estabeleça a conexão
     conn_str = (
         r'DRIVER={SQL Server};'
@@ -54,8 +34,8 @@ def generate_plot():
     )
     conn = pyodbc.connect(conn_str)
 
-    # Execute a consulta SQL para obter os dados
-    query = "SELECT idPieza, pPoppetpos, ts FROM poppet"
+    # Execute a consulta SQL para obter os dados do ano especificado
+    query = f"SELECT idPieza, pPoppetpos, ts FROM poppet WHERE YEAR(ts) = {year}"
     data = pd.read_sql(query, conn)
 
     # Feche a conexão após a obtenção dos dados
@@ -64,17 +44,17 @@ def generate_plot():
     # Converta a coluna 'ts' para datetime
     data['ts'] = pd.to_datetime(data['ts'])
 
-    # Resample dos dados por ano para calcular a média anual de pPoppetpos
-    yearly_data = data.resample('Y', on='ts')['pPoppetpos'].mean()
+    # Resample dos dados por mês para calcular a média mensal de pPoppetpos
+    monthly_data = data.resample('M', on='ts')['pPoppetpos'].mean()
 
     # Crie o gráfico da série temporal
     plt.figure(figsize=(12, 6))  # Ajuste o tamanho da figura conforme necessário
-    plt.plot(yearly_data.index, yearly_data.values, marker='o', linestyle='-')
+    plt.plot(monthly_data.index, monthly_data.values, marker='o', linestyle='-')
 
     # Defina os rótulos e o título com uma reflexão precisa do eixo y
-    plt.xlabel('Ano')
+    plt.xlabel('Mês')
     plt.ylabel('Média de pPoppetpos')
-    plt.title('Média de pPoppetpos por Ano')
+    plt.title(f'Média de pPoppetpos por Mês em {year}')
 
     # Gire os rótulos do eixo x para melhor legibilidade, se necessário
     plt.xticks(rotation=45)  # Ajuste o ângulo de rotação conforme necessário
@@ -95,6 +75,7 @@ def generate_plot():
 
 
 
+
 app = Flask(__name__)
 app.secret_key = 'secretkeysparepartscroston'
 
@@ -106,9 +87,9 @@ def index():
 def home():
   return render_template('home.html')
 
-@app.route('/graph')
-def graph():
-    graph = generate_plot()
+@app.route('/graph/<int:year>')
+def graph(year):
+    graph = generate_plot(year)
     return render_template('graph.html', graph=graph)
 
 
