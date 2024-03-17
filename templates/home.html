@@ -84,10 +84,28 @@
                 </nav>
                 <div class="card shadow mb-1 ml-1 ">
                     <div class="card-header py-3">
-                        
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label for="databaseSelect">Selecione a base de dados:</label>
+                                <select class="form-control" id="databaseSelect">
+                                    <option value="database1">Database 1</option>
+                                    <option value="database2">Database 2</option>
+                                    <option value="database3">Database 3</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="attributeSelect">Selecione o atributo:</label>
+                                <select class="form-control" id="attributeSelect">
+                                    <option value="attribute1">Atributo 1</option>
+                                    <option value="attribute2">Atributo 2</option>
+                                    <option value="attribute3">Atributo 3</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
                     <div class="card-body">
-                        
+                        <!-- Espaço para gráficos -->
+                        <div id="chart"></div>
                     </div>
                 </div>
                 
@@ -111,8 +129,9 @@
     <script src="static/vendor/jquery-easing/jquery.easing.min.js"></script>
     <!-- Custom scripts for all pages-->
     <script src="static/js/sb-admin-2.min.js"></script>
-
-
+    <!-- Your custom script to handle chart generation -->
+    <script>
+        // Coloque seu script aqui para gerar os gráficos com ApexCharts
     </script>
 </body>
 
