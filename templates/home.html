@@ -88,24 +88,28 @@
                             <div class="col-md-4">
                                 <label for="databaseSelect">Selecione a base de dados:</label>
                                 <select class="form-control" id="databaseSelect">
-                                    <option value="database1">Database 1</option>
-                                    <option value="database2">Database 2</option>
-                                    <option value="database3">Database 3</option>
+                                    <option value="database1">Base de Dados 1</option>
                                 </select>
                             </div>
-                            <div class="col-md-4">
-                                <label for="attributeSelect">Selecione o atributo:</label>
-                                <select class="form-control" id="attributeSelect">
-                                    <option value="attribute1">Atributo 1</option>
-                                    <option value="attribute2">Atributo 2</option>
-                                    <option value="attribute3">Atributo 3</option>
+                            <div class="form-group">
+                                <label for="yearSelect">Selecione o ano:</label>
+                                <select class="form-control" id="yearSelect">
+                                    <option value="2018">2018</option>
+                                    <option value="2019">2019</option>
+                                    <option value="2020">2020</option>
+                                    <option value="2021">2021</option>
+                                    <option value="2022">2022</option>
+                                    <option value="2023">2023</option>
+                                    <option value="2024">2024</option>
+                                    <!-- Adicione mais opções conforme necessário -->
                                 </select>
                             </div>
                         </div>
                     </div>
                     <div class="card-body">
-                        <!-- Espaço para gráficos -->
                         <div id="chart"></div>
+                        <div></div>
+                        <div></div>
                     </div>
                 </div>
                 
@@ -129,10 +133,32 @@
     <script src="static/vendor/jquery-easing/jquery.easing.min.js"></script>
     <!-- Custom scripts for all pages-->
     <script src="static/js/sb-admin-2.min.js"></script>
-    <!-- Your custom script to handle chart generation -->
+
+    <script src="static/scripts/script.js"></script>
+
     <script>
-        // Coloque seu script aqui para gerar os gráficos com ApexCharts
+            function updateGraph(year) {
+        $.ajax({
+            url: `/graph/${year}`,
+            type: 'GET',
+            success: function (data) {
+                $('#chart').html(data);
+            },
+            error: function (xhr, status, error) {
+                console.error(error);
+            }
+        });
+    }
+
+    // Manipulador de evento para a mudança na seleção do ano
+    $(document).ready(function () {
+        $('#yearSelect').change(function () {
+            var selectedYear = $(this).val();
+            updateGraph(selectedYear);
+        });
+    });
     </script>
+
 </body>
 
 </html>

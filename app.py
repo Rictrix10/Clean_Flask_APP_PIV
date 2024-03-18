@@ -48,7 +48,7 @@ def generate_plot(year):
     monthly_data = data.resample('M', on='ts')['pPoppetpos'].mean()
 
     # Crie o gráfico da série temporal
-    plt.figure(figsize=(12, 6))  # Ajuste o tamanho da figura conforme necessário
+    plt.figure(figsize=(6, 4))  # Ajuste o tamanho da figura conforme necessário
     plt.plot(monthly_data.index, monthly_data.values, marker='o', linestyle='-')
 
     # Defina os rótulos e o título com uma reflexão precisa do eixo y
@@ -85,7 +85,11 @@ def index():
 
 @app.route('/home')
 def home():
-  return render_template('home.html')
+    # Verifica se o ano foi fornecido na solicitação. Se não, use o ano atual.
+    current_year = request.args.get('year', default=2024, type=int)
+    graph = generate_plot(current_year)
+    return render_template('home.html', graph=graph, current_year=current_year)
+
 
 @app.route('/graph/<int:year>')
 def graph(year):
