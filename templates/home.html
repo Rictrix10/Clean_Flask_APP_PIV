@@ -43,7 +43,7 @@
             <hr class="sidebar-divider my-0">
             <!-- Nav Item - Dashboard -->
             <li class="nav-item active route">
-                <a class="nav-link" href="#" >
+                <a class="nav-link" href="#">
                     <span>Voltar</span></a>
             </li>
             <hr class="sidebar-divider d-none d-md-block">
@@ -108,11 +108,33 @@
                     </div>
                     <div class="card-body">
                         <div id="chart"></div>
-                        <div></div>
-                        <div></div>
+                        <div id="statistics" class="mt-4">
+                            <h5>Dados Estatísticos</h5>
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Estatística</th>
+                                        <th>Valor</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="statisticsTable">
+                                    <!-- Os dados estatísticos serão inseridos aqui via JavaScript -->
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
-                
+
+                <!-- Adicione a div para o gráfico de dispersão -->
+                <div class="card shadow mb-1 ml-1 ">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Gráfico de Dispersão</h6>
+                    </div>
+                    <div class="card-body">
+                        <div id="scatterPlot"></div>
+                    </div>
+                </div>
+
             </div>
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
@@ -137,26 +159,59 @@
     <script src="static/scripts/script.js"></script>
 
     <script>
-            function updateGraph(year) {
-        $.ajax({
-            url: `/graph/${year}`,
-            type: 'GET',
-            success: function (data) {
-                $('#chart').html(data);
-            },
-            error: function (xhr, status, error) {
-                console.error(error);
-            }
-        });
-    }
+        function updateGraph(year) {
+            $.ajax({
+                url: `/graph/${year}`,
+                type: 'GET',
+                success: function (data) {
+                    $('#chart').html(data);
+                },
+                error: function (xhr, status, error) {
+                    console.error(error);
+                }
+            });
+        }
 
-    // Manipulador de evento para a mudança na seleção do ano
-    $(document).ready(function () {
-        $('#yearSelect').change(function () {
-            var selectedYear = $(this).val();
-            updateGraph(selectedYear);
+        function updateStatistics(year) {
+            $.ajax({
+                url: `/statistics/${year}`,
+                type: 'GET',
+                success: function (data) {
+                    // Atualize a tabela com os dados estatísticos
+                    var tableBody = $('#statisticsTable');
+                    tableBody.empty();
+                    $.each(data, function (statistic, value) {
+                        tableBody.append(`<tr><td>${statistic}</td><td>${value}</td></tr>`);
+                    });
+                },
+                error: function (xhr, status, error) {
+                    console.error(error);
+                }
+            });
+        }
+
+        function updateScatterPlot(year) {
+            $.ajax({
+                url: `/scatter_plot/${year}`,
+                type: 'GET',
+                success: function (data) {
+                    $('#scatterPlot').html(data);
+                },
+                error: function (xhr, status, error) {
+                    console.error(error);
+                }
+            });
+        }
+
+        // Manipulador de evento para a mudança na seleção do ano
+        $(document).ready(function () {
+            $('#yearSelect').change(function () {
+                var selectedYear = $(this).val();
+                updateGraph(selectedYear);
+                updateStatistics(selectedYear);
+                updateScatterPlot(selectedYear);
+            });
         });
-    });
     </script>
 
 </body>
