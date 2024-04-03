@@ -5,6 +5,9 @@ import pyodbc
 import matplotlib.pyplot as plt
 from io import BytesIO
 import base64
+from functions import generate_correlation_matrix
+from functions import generate_corr_matrix_solders
+
 
 try:
     print("Sucesso na Ligação ")
@@ -149,6 +152,17 @@ def get_statistics(year):
 def scatter_plot(year):
     graph = generate_scatter_plot(year)
     return render_template('scatter_plot.html', graph=graph, year=year)
+
+@app.route('/correlation_matrix')
+def correlation_matrix():
+    image_base64 = generate_correlation_matrix()
+    return render_template('correlation_matrix.html', image_base64=image_base64)
+
+@app.route('/correlation_matrix_solders')
+def correlation_matrix_solders():
+    image_base64 = generate_corr_matrix_solders()
+    return render_template('correlation_matrix_solders.html', image_base64=image_base64)
+
 
 if __name__ == "__main__":
     app.run(debug=True)
