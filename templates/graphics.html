@@ -118,28 +118,36 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <div id="chart"></div>
-                        <div id="statistics" class="mt-4">
-                            <h5>Dados Estatísticos</h5>
-                            <table class="table table-bordered">
-                                <thead>
-                                    <tr>
-                                        <th>Estatística</th>
-                                        <th>Valor</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="statisticsTable">
-                                    <!-- Os dados estatísticos serão inseridos aqui via JavaScript -->
-                                </tbody>
-                            </table>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h3 class="m-0 font-weight-bold text-primary">Gráfico de Linhas</h3>
+                                <div id="chart"></div>
+                            </div>
+                            <div class="col-md-6">
+                                <div id="statistics" class="mt-4">
+                                    <h3 class="m-0 font-weight-bold text-primary">Dados Estatísticos</h3>
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>Estatística</th>
+                                                <th>Valor</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="statisticsTable">
+                                            <!-- Os dados estatísticos serão inseridos aqui via JavaScript -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
                     </div>
+                    
                 </div>
 
                 <!-- Adicione a div para o gráfico de dispersão -->
                 <div class="card shadow mb-1 ml-1 ">
                     <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">Gráfico de Dispersão</h6>
+                        <h3 class="m-0 font-weight-bold text-primary">Gráfico de Dispersão</h3>
                     </div>
                     <div class="card-body">
                         <div id="scatterPlot"></div>

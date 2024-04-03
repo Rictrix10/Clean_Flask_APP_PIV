@@ -202,3 +202,5 @@ def calculate_statistics(year):
     }
 
     return statistics
+
+
