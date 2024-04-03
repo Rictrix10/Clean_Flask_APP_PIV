@@ -50,6 +50,17 @@
             <div class="text-center d-none d-md-inline">
                 <button class="rounded-circle border-0" id="sidebarToggle"></button>
             </div>
+            <hr class="sidebar-divider d-none d-md-block">
+            <li class="nav-item active route">
+                <a class="nav-link" href="/graphics">
+                    <span>Gráficos</span></a>
+            </li>
+            <hr class="sidebar-divider d-none d-md-block">
+            <li class="nav-item active route">
+                <a class="nav-link" href="/correlation_matrix">
+                    <span>Matrix de Correlação</span></a>
+            </li>
+            <hr class="sidebar-divider d-none d-md-block">
         </ul>
         <div id="content-wrapper" class="d-flex flex-column">
             <div id="content">
@@ -82,59 +93,6 @@
                         </li>
                     </ul>
                 </nav>
-                <div class="card shadow mb-1 ml-1 ">
-                    <div class="card-header py-3">
-                        <div class="row">
-                            <div class="col-md-4">
-                                <label for="databaseSelect">Selecione a base de dados:</label>
-                                <select class="form-control" id="databaseSelect">
-                                    <option value="database1">Base de Dados 1</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="yearSelect">Selecione o ano:</label>
-                                <select class="form-control" id="yearSelect">
-                                    <option value="2018">2018</option>
-                                    <option value="2019">2019</option>
-                                    <option value="2020">2020</option>
-                                    <option value="2021">2021</option>
-                                    <option value="2022">2022</option>
-                                    <option value="2023">2023</option>
-                                    <option value="2024">2024</option>
-                                    <!-- Adicione mais opções conforme necessário -->
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div id="chart"></div>
-                        <div id="statistics" class="mt-4">
-                            <h5>Dados Estatísticos</h5>
-                            <table class="table table-bordered">
-                                <thead>
-                                    <tr>
-                                        <th>Estatística</th>
-                                        <th>Valor</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="statisticsTable">
-                                    <!-- Os dados estatísticos serão inseridos aqui via JavaScript -->
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Adicione a div para o gráfico de dispersão -->
-                <div class="card shadow mb-1 ml-1 ">
-                    <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">Gráfico de Dispersão</h6>
-                    </div>
-                    <div class="card-body">
-                        <div id="scatterPlot"></div>
-                    </div>
-                </div>
-
             </div>
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
@@ -151,68 +109,10 @@
     <script src="static/scripts/js/scripts.js"></script>
     <script src="static/vendor/jquery/jquery.min.js"></script>
     <script src="static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <!-- Core plugin JavaScript-->
     <script src="static/vendor/jquery-easing/jquery.easing.min.js"></script>
-    <!-- Custom scripts for all pages-->
     <script src="static/js/sb-admin-2.min.js"></script>
 
     <script src="static/scripts/script.js"></script>
-
-    <script>
-        function updateGraph(year) {
-            $.ajax({
-                url: `/graph/${year}`,
-                type: 'GET',
-                success: function (data) {
-                    $('#chart').html(data);
-                },
-                error: function (xhr, status, error) {
-                    console.error(error);
-                }
-            });
-        }
-
-        function updateStatistics(year) {
-            $.ajax({
-                url: `/statistics/${year}`,
-                type: 'GET',
-                success: function (data) {
-                    // Atualize a tabela com os dados estatísticos
-                    var tableBody = $('#statisticsTable');
-                    tableBody.empty();
-                    $.each(data, function (statistic, value) {
-                        tableBody.append(`<tr><td>${statistic}</td><td>${value}</td></tr>`);
-                    });
-                },
-                error: function (xhr, status, error) {
-                    console.error(error);
-                }
-            });
-        }
-
-        function updateScatterPlot(year) {
-            $.ajax({
-                url: `/scatter_plot/${year}`,
-                type: 'GET',
-                success: function (data) {
-                    $('#scatterPlot').html(data);
-                },
-                error: function (xhr, status, error) {
-                    console.error(error);
-                }
-            });
-        }
-
-        // Manipulador de evento para a mudança na seleção do ano
-        $(document).ready(function () {
-            $('#yearSelect').change(function () {
-                var selectedYear = $(this).val();
-                updateGraph(selectedYear);
-                updateStatistics(selectedYear);
-                updateScatterPlot(selectedYear);
-            });
-        });
-    </script>
 
 </body>
 
